@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar } from "../shared/Avatar";
 import { Button } from "../shared/Button";
 import { Image, Send } from "lucide-react";
@@ -18,6 +18,10 @@ export const CreatePost = ({
   const [image, setImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userAvatar, setUserAvatar] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
+  const [mentionSuggestions, setMentionSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const uploadImage = async () => {
     if (!image) return null;
@@ -75,31 +79,96 @@ export const CreatePost = ({
     const file = e.target.files?.[0];
     if (file) setImage(file);
   };
+
+  const fetchAllUsers = async () => {
+    const { data, error } = await supabase.from("Users").select("*");
+    if (error) {
+      console.error(error);
+      return;
+    }
+    const allFilteredUsers = data.filter(
+      (user: { id: string }) => user.id !== currentUser.id
+    );
+    setAllUsers(allFilteredUsers || []);
+  };
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setContent(value);
+
+    const lastWord = value.split(" ").pop();
+    if (lastWord?.startsWith("@")) {
+      const query = lastWord.slice(1).toLowerCase();
+      const suggestions = allUsers.filter((user: { name: string }) =>
+        user.name.toLowerCase().includes(query)
+      );
+      setMentionSuggestions(suggestions);
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (user: { name: string }) => {
+    if (!textareaRef.current) return;
+
+    const cursorPosition = textareaRef.current.selectionStart;
+    const textBeforeCursor = content.slice(0, cursorPosition);
+    const textAfterCursor = content.slice(cursorPosition);
+
+    const lastWordStart = textBeforeCursor.lastIndexOf("@");
+    const updatedContent =
+      textBeforeCursor.slice(0, lastWordStart) +
+      `@${user.name} ` +
+      textAfterCursor;
+
+    setContent(updatedContent);
+    setShowSuggestions(false);
+    textareaRef.current.focus();
+  };
+
   useEffect(() => {
-    const fetchUserPRofile = async () => {
+    const fetch_user_profile = async () => {
       const _userProfile = await fetchUserProfile(currentUser.id);
       setUserAvatar(_userProfile.avatar);
     };
-    fetchUserPRofile();
+    fetch_user_profile();
+    fetchAllUsers();
   }, []);
-  
+
   return (
     <div className="bg-card rounded-lg p-4 shadow-sm">
-      <h3 className="text-xl font-semibold mb-3 text-center">
-        Hi {currentUser?.name}, Share your thoughts?
+      <h3 className="text-xl font-semibold mb-5 text-center">
+        Hi {currentUser?.name}👋🏻, Share your thoughts?
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex items-start flex-col gap-2 w-full">
           <div className="flex items-start space-x-3 h-max w-full">
             <Avatar src={userAvatar || ""} alt={currentUser?.name} />
             <textarea
+              ref={textareaRef}
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleTextareaChange}
               placeholder="What's on your mind?"
               className={`flex-1 bg-transparent resize-none outline-none placeholder:text-muted-foreground  ${
                 image ? "" : "min-h-[100px]"
               }`}
             />
+            {showSuggestions && (
+              <ul className="absolute z-10 bg-white border rounded shadow-md max-h-40 top-52 max-w-[30%] overflow-y-auto w-full">
+                {mentionSuggestions.map(
+                  (user: { name: string; id: string }) => (
+                    <li
+                      key={user.id}
+                      className="p-2 cursor-pointer hover:bg-gray-200"
+                      onClick={() => handleSuggestionClick(user)}
+                    >
+                      {user.name}
+                    </li>
+                  )
+                )}
+              </ul>
+            )}
           </div>
           {image && (
             <div className="flex items-center space-x-2 mt-2">

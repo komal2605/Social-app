@@ -6,6 +6,7 @@ import {
   uploadImage,
 } from "@/integrations/supabase/helper_functions/uploadFiles";
 import { fetchUserProfile } from "@/integrations/supabase/helper_functions/user/getUserProfile";
+import EditIcon from "@/assets/editIcon.png";
 
 interface ProfileHeaderProps {
   user: {
@@ -15,15 +16,13 @@ interface ProfileHeaderProps {
     username: string;
     avatar?: string;
     bio?: string;
-    // followers?: number;
-    // following?: number;
+    followers?: number;
+    following?: number;
   };
 }
 
 export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
-  const [file, setFile] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState(user?.avatar || "");
-
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
@@ -40,8 +39,6 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   ) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
-
       try {
         // Upload the image
         const filePath = await uploadImage(selectedFile, user.id);
@@ -62,16 +59,23 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   return (
     <div className="bg-card rounded-lg p-6 shadow-sm">
       <div className="flex flex-col items-center text-center space-y-4">
-        <input
-          type="file"
-          className="hidden"
-          id="avatar"
-          onChange={handleFileChange}
-          accept="image/*"
-        />
-        <label htmlFor="avatar" className="cursor-pointer">
-          <Avatar size="lg" alt={user?.name} src={avatarUrl} />
-        </label>
+        <div className="relative group">
+          <input
+            type="file"
+            className="hidden"
+            id="avatar"
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+          <label htmlFor="avatar" className="cursor-pointer">
+            <Avatar size="lg" alt={user?.name} src={avatarUrl} />
+            <img
+              src={EditIcon}
+              alt="Edit"
+              className="absolute top-0 -right-1 w-6 rounded-full hidden group-hover:block "
+            />
+          </label>
+        </div>
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold text-card-foreground">
             {user?.name}

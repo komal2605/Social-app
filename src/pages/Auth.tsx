@@ -119,7 +119,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="container max-w-md mx-auto pt-20">
+    <div className="container max-w-md m-auto pt-20 h-screen flex items-center justify-center">
       <Card>
         <CardHeader>
           <CardTitle>
