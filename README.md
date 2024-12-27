@@ -14,14 +14,6 @@ Vite React Shadcn TS is a modern web application starter project leveraging Vite
 - **Profile Management**: Update user profiles via a dedicated profile screen(profile picture update only).
 - **Logout Functionality**: Simple and secure logout process.
 
-### Technical Highlights
-
-- Utilizes `@supabase/supabase-js` for backend integration and database operations.
-- Implements `@tanstack/react-query` for efficient data fetching and state management.
-- Supports responsive and interactive UI components with Radix UI and TailwindCSS.
-- Includes robust form handling with `react-hook-form` and schema validation using `zod`.
-- Built-in support for internationalization with `javascript-time-ago`.
-
 ## Getting Started
 
 ### Prerequisites

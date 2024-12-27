@@ -1,7 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Navbar } from "./components/layout/Navbar";
@@ -11,11 +10,10 @@ import Auth from "./pages/Auth";
 import { UserProvider, useUser } from "./components/context/UserContext";
 import PostCreate from "./pages/PostCreate";
 
-const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+
       <UserProvider>
         <TooltipProvider>
           <Toaster />
@@ -52,7 +50,6 @@ const App = () => {
           </BrowserRouter>
         </TooltipProvider>
       </UserProvider>
-    </QueryClientProvider>
   );
 };
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
