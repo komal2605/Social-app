@@ -20,7 +20,6 @@ Vite React Shadcn TS is a modern web application starter project leveraging Vite
 - Implements `@tanstack/react-query` for efficient data fetching and state management.
 - Supports responsive and interactive UI components with Radix UI and TailwindCSS.
 - Includes robust form handling with `react-hook-form` and schema validation using `zod`.
-- Carousel functionality powered by `embla-carousel-react` for enhanced visual presentations.
 - Built-in support for internationalization with `javascript-time-ago`.
 
 ## Getting Started
@@ -67,23 +66,12 @@ npm run build
 yarn build
 ```
 
-### Preview
-
-To preview the production build locally:
-
-```bash
-npm run preview
-# or
-yarn preview
-```
-
 ## Scripts
 
 - `dev`: Starts the development server.
 - `build`: Builds the application for production.
 - `build:dev`: Builds the application in development mode.
 - `lint`: Lints the codebase using ESLint.
-- `preview`: Previews the production build locally.
 
 ## Dependencies
 
@@ -91,7 +79,6 @@ This project leverages a rich ecosystem of libraries and tools, including:
 
 - **Frontend Frameworks**: React, TypeScript
 - **UI Components**: Radix UI, TailwindCSS
-- **State Management**: React Query
 - **Form Handling**: React Hook Form, Zod
 - **Animations**: Framer Motion
 - **Backend Integration**: Supabase
