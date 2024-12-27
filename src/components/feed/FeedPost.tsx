@@ -30,12 +30,16 @@ export const FeedPost = ({
       <div className="flex items-start space-x-3">
         <Avatar src={author?.avatar} alt={author?.name} />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center space-x-2">
-            <h3 className="font-medium text-card-foreground">{author?.name}</h3>
-            <span className="text-muted-foreground text-sm">
-              @{author?.email}
-            </span>
-            <span className="text-muted-foreground text-sm">·</span>
+          <div className="flex items-center space-x-2 flex-wrap">
+            <div className="flex flex-col items-start  mr-auto">
+              <h3 className="font-medium text-card-foreground">
+                {author?.name}
+              </h3>
+              <span className="text-muted-foreground text-sm">
+                @{author?.email}
+              </span>
+            </div>
+            {/* <span className="text-muted-foreground text-sm">·</span> */}
             <time className="text-muted-foreground text-sm">
               <ReactTimeAgo date={new Date(created_at)} locale="en-US" />
             </time>
