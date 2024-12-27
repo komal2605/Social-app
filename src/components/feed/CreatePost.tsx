@@ -4,7 +4,7 @@ import { Button } from "../shared/Button";
 import { Image, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { fetchUserProfile } from "@/supabase/user/getUserProfile";
+import { fetchUserProfile } from "@/integrations/supabase/helper_functions/user/getUserProfile";
 
 export const CreatePost = ({
   currentUser,

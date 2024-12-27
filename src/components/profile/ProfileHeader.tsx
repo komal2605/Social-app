@@ -4,8 +4,8 @@ import {
   getImageUrl,
   updateUserProfile,
   uploadImage,
-} from "@/supabase/uploadFiles";
-import { fetchUserProfile } from "@/supabase/user/getUserProfile";
+} from "@/integrations/supabase/helper_functions/uploadFiles";
+import { fetchUserProfile } from "@/integrations/supabase/helper_functions/user/getUserProfile";
 
 interface ProfileHeaderProps {
   user: {

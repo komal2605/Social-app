@@ -3,7 +3,7 @@ import ReactTimeAgo from "react-time-ago";
 import TimeAgo from "javascript-time-ago";
 
 import en from "javascript-time-ago/locale/en";
-import { getImageUrl } from "@/supabase/uploadFiles";
+import { getImageUrl } from "@/integrations/supabase/helper_functions/uploadFiles";
 
 TimeAgo.addDefaultLocale(en);
 
